@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Recognition</title>
+
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <section class="hero">
+
+        <div class="hero-card">
+
+            <h1 class="title">Plant Disease Recognition</h1>
+            <p class="subtitle">
+                Upload a leaf image and get instant AI-powered diagnosis.
+            </p>
+
+            <!-- Upload Form -->
+            <form action="/upload/" method="POST" enctype="multipart/form-data" class="upload-form">
+                
+                <label class="file-upload" id="fileLabel">
+                    <input type="file" name="img" id="fileInput" accept="image/png,image/jpeg" required>
+                    <span id="fileText">Select Image</span>
+                </label>
+
+                <button class="upload-btn" type="submit" id="analyzeBtn">
+                    {% if result %}Analyze Another Image{% else %}Analyze{% endif %}
+                </button>
+
+            </form>
+
+            <!-- RESULT BOX -->
+            {% if result %}
+            <div class="result-box">
+
+                <div class="result-image-box">
+                    <img src="{{ imagepath }}" class="result-image" alt="Uploaded Image">
+                </div>
+
+                <div class="result-details">
+                    <h2 class="result-title">{{ prediction }}</h2>
+                    <p class="confidence"><b>Confidence:</b> {{ confidence | round(2) }}%</p>
+                </div>
+
+            </div>
+
+            <!-- GAP 2 — Cause & Solution -->
+            <div class="info-box">
+                <h3>Disease Information</h3>
+
+                <p><b>Cause:</b></p>
+                <p class="info-text">{{ cause }}</p>
+
+                <br>
+
+                <p><b>Solution:</b></p>
+                <p class="info-text">{{ solution }}</p>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Small JavaScript to show selected filename -->
+    <script>
+        document.getElementById("fileInput").addEventListener("change", function() {
+            const fileName = this.files[0]?.name || "Select Image";
+            document.getElementById("fileText").innerText = fileName;
+        });
+    </script>
+
+</body>
+</html>
