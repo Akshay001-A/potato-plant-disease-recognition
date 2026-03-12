@@ -123,11 +123,11 @@ http://127.0.0.1:5000
 
 ### Home Page
 
-![Home Page](images/home.png)
+![Home Page](static/images/home.png)
 
 ### Disease Prediction Result
 
-![Prediction Result](images/prediction.png)
+![Prediction Result](static/images/prediction.png)
 
 
 
@@ -154,7 +154,7 @@ pip install -r requirements.txt
 # 👨‍💻 Authors
 
 - **Akshay R** – [GitHub](https://github.com/Akshay001-A)
-- **Charan Kumar R** - [GitHub](https://github.com/CharanKumarR)
+- **Charan Kumar R** - [GitHub](https://github.com/Charan-Kumarr)
 
 ---
 
