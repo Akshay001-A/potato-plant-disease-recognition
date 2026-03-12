@@ -1,18 +1,27 @@
 # 🌿 Potato Plant Disease Recognition
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
-![Flask](https://img.shields.io/badge/Framework-Flask-green)
-![TensorFlow](https://img.shields.io/badge/AI-TensorFlow-orange)
+![Framework](https://img.shields.io/badge/Framework-Flask-green)
+![AI](https://img.shields.io/badge/AI-TensorFlow-orange)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 A **Deep Learning based web application** that detects **potato plant diseases** from leaf images.
 
-Users can upload a potato leaf image and the system predicts whether the plant is **Healthy or affected by disease** using a trained TensorFlow model.
+Users upload a potato leaf image and the system predicts whether the plant is **Healthy or affected by disease** using a trained TensorFlow model.
 
+---
 
-## 📷 Application Screenshot
+# 📑 Table of Contents
 
-![Application Screenshot](screenshot.png)
+* Features
+* Technologies Used
+* Quick Start
+* Model Download
+* Run the Application
+* Application Demo
+* Requirements
+* Author
+* License
 
 ---
 
@@ -22,7 +31,7 @@ Users can upload a potato leaf image and the system predicts whether the plant i
 * Deep learning disease detection
 * Confidence score for predictions
 * Cause and solution for detected disease
-* Simple web interface using Flask
+* Simple and interactive Flask web interface
 
 ---
 
@@ -41,21 +50,21 @@ Users can upload a potato leaf image and the system predicts whether the plant i
 
 # ⚡ Quick Start
 
-### 1️⃣ Clone the repository
+Clone the repository:
 
-```bash
+```
 git clone https://github.com/Akshay001-A/potato-plant-disease-recognition.git
 ```
 
-### 2️⃣ Go to the project folder
+Navigate to the project folder:
 
-```bash
+```
 cd potato-plant-disease-recognition
 ```
 
-### 3️⃣ Install dependencies
+Install dependencies:
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
@@ -69,9 +78,9 @@ Download the model from Google Drive:
 
 https://drive.google.com/file/d/1jQLlUoyXaTr4wTnRKv-5uydloXUJnDQF/view
 
-After downloading, place the model file inside the **models folder**.
+After downloading, place the file inside the **models** folder.
 
-Project structure should look like this:
+Example structure:
 
 ```
 potato-plant-disease-recognition
@@ -86,12 +95,7 @@ potato-plant-disease-recognition
 │   └── plant_disease_recog_model1.keras
 │
 ├── static
-│   ├── css
-│   └── images
-│
 ├── templates
-│   └── home.html
-│
 └── uploadimages
 ```
 
@@ -101,29 +105,31 @@ potato-plant-disease-recognition
 
 Start the Flask server:
 
-```bash
+```
 python app.py
 ```
 
-Open your browser and go to:
+Open the browser:
 
 ```
 http://127.0.0.1:5000
 ```
 
-Upload a potato leaf image to detect disease.
+
 
 ---
 
-# 📷 Application Screenshot
+# 📷 Application Demo
 
-You can add screenshots here to show how the application works.
+### Home Page
 
-Example:
+![Home Page](home.png)
 
-```
-![Application Screenshot](screenshot.png)
-```
+### Disease Prediction Result
+
+![Prediction Result](prediction.png)
+
+
 
 ---
 
@@ -135,11 +141,12 @@ tensorflow
 keras
 numpy
 pillow
+gdown
 ```
 
-Install dependencies using:
+Install using:
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
@@ -147,8 +154,8 @@ pip install -r requirements.txt
 
 # 👨‍💻 Author
 
-Akshay R
-Charan Kumar R
+-Akshay R
+-Charan Kumar R
 
 ---
 
@@ -156,4 +163,4 @@ Charan Kumar R
 
 This project is licensed under the **MIT License**.
 
-See the `LICENSE` file for more details.
+See the LICENSE file for more details.
