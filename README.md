@@ -9,6 +9,11 @@ A **Deep Learning based web application** that detects **potato plant diseases**
 
 Users can upload a potato leaf image and the system predicts whether the plant is **Healthy or affected by disease** using a trained TensorFlow model.
 
+
+## 📷 Application Screenshot
+
+![Application Screenshot](Screenshot.png)
+
 ---
 
 # 🚀 Features
