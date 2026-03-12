@@ -12,7 +12,7 @@ Users can upload a potato leaf image and the system predicts whether the plant i
 
 ## 📷 Application Screenshot
 
-![Application Screenshot](Screenshot.png)
+![Application Screenshot](screenshot.png)
 
 ---
 
