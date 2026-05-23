@@ -102,7 +102,7 @@ For detected diseases, the system provides:
 
 Modern image upload interface for potato leaf disease detection.
 
-<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/home.png" width="100%"/>
+<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/planthome.png" width="100%"/>
 
 ---
 
