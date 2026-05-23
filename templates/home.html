@@ -1,80 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Disease Recognition</title>
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Potato Plant Leaf Disease Recognition</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="../static/css/style.css">
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
+
 <body>
 
-    <div class="overlay"></div>
+    <!-- PARTICLES -->
+    <div class="particles">
 
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            Potato Guard
+
+        </div>
+
+    </nav>
+
+    <!-- HERO -->
     <section class="hero">
 
+        <!-- MAIN CARD -->
         <div class="hero-card">
 
-            <h1 class="title">Plant Disease Recognition</h1>
+            <!-- BADGE -->
+            <div class="badge">
+
+                Deep Learning Powered Detection
+
+            </div>
+
+            <!-- TITLE -->
+            <h1 class="title">
+
+                Potato Plant Leaf Disease Detection
+
+            </h1>
+
+            <!-- SUBTITLE -->
             <p class="subtitle">
-                Upload a leaf image and get instant AI-powered diagnosis.
+
+                Upload a Potato plant leaf image and get instant Deep Learning-powered disease prediction,
+                confidence score, causes, and smart treatment solutions.
+
             </p>
 
-            <!-- Upload Form -->
+            <!-- FORM -->
             <form action="/upload/" method="POST" enctype="multipart/form-data" class="upload-form">
-                
-                <label class="file-upload" id="fileLabel">
+
+                <!-- FILE INPUT -->
+                <label class="file-upload">
+
                     <input type="file" name="img" id="fileInput" accept="image/png,image/jpeg" required>
-                    <span id="fileText">Select Image</span>
+
+                    <div class="upload-content">
+
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+
+                        <h3>Select Plant Image</h3>
+
+                        <p id="fileText">
+
+                            Drag & Drop or Click to Upload
+
+                        </p>
+
+                    </div>
+
                 </label>
 
+                <!-- BUTTON -->
                 <button class="upload-btn" type="submit" id="analyzeBtn">
-                    {% if result %}Analyze Another Image{% else %}Analyze{% endif %}
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    {% if result %}
+
+                    Analyze Another Image
+
+                    {% else %}
+
+                    Analyze Disease
+
+                    {% endif %}
+
                 </button>
 
             </form>
 
-            <!-- RESULT BOX -->
+            <!-- RESULT -->
             {% if result %}
+
             <div class="result-box">
 
+                <!-- RESULT IMAGE -->
                 <div class="result-image-box">
-                    <img src="{{ imagepath }}" class="result-image" alt="Uploaded Image">
+
+                    <img src="{{ imagepath }}" class="result-image" alt="Plant Image">
+
                 </div>
 
+                <!-- RESULT DETAILS -->
                 <div class="result-details">
-                    <h2 class="result-title">{{ prediction }}</h2>
-                    <p class="confidence"><b>Confidence:</b> {{ confidence | round(2) }}%</p>
+
+                    <!-- RESULT BADGE -->
+                    <div class="result-badge">
+
+                        Prediction Result
+
+                    </div>
+
+                    <!-- PREDICTION -->
+                    <h2 class="result-title">
+
+                        {{ prediction }}
+
+                    </h2>
+
+                    <!-- CONFIDENCE -->
+                    <div class="confidence-wrapper">
+
+                        <div class="confidence-header">
+
+                            <span>Confidence</span>
+
+                            <span>
+
+                                {{ confidence | default(0) | round(2) }}%
+
+                            </span>
+
+                        </div>
+
+                        <!-- PROGRESS BAR -->
+                        <div class="progress-bar">
+
+                            <div class="progress-fill" data-width="{{ confidence | default(0) | round(2) }}">
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
 
-            <!-- GAP 2 — Cause & Solution -->
+            <!-- INFO SECTION -->
             <div class="info-box">
-                <h3>Disease Information</h3>
 
-                <p><b>Cause:</b></p>
-                <p class="info-text">{{ cause }}</p>
+                <!-- CAUSE -->
+                <div class="info-card">
 
-                <br>
+                    <div class="info-icon red">
 
-                <p><b>Solution:</b></p>
-                <p class="info-text">{{ solution }}</p>
+                        <i class="fa-solid fa-virus"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Cause</h3>
+
+                        <p class="info-text">
+
+                            {{ cause }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- SOLUTION -->
+                <div class="info-card">
+
+                    <div class="info-icon green">
+
+                        <i class="fa-solid fa-shield-heart"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>Solution</h3>
+
+                        <p class="info-text">
+
+                            {{ solution }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
             </div>
+
             {% endif %}
 
         </div>
 
     </section>
 
-
-    <!-- Small JavaScript to show selected filename -->
+    <!-- JAVASCRIPT -->
     <script>
-        document.getElementById("fileInput").addEventListener("change", function() {
-            const fileName = this.files[0]?.name || "Select Image";
-            document.getElementById("fileText").innerText = fileName;
+
+        // FILE NAME PREVIEW
+        const fileInput =
+            document.getElementById("fileInput");
+
+        const fileText =
+            document.getElementById("fileText");
+
+        fileInput.addEventListener("change", function () {
+
+            const fileName =
+                this.files[0]?.name ||
+                "Drag & Drop or Click to Upload";
+
+            fileText.innerText = fileName;
+
         });
+
+        // BUTTON LOADING
+        const analyzeBtn =
+            document.getElementById("analyzeBtn");
+
+        analyzeBtn.addEventListener("click", () => {
+
+            analyzeBtn.innerHTML =
+                `<i class="fa-solid fa-spinner fa-spin"></i> Analyzing...`;
+
+        });
+
+        // PROGRESS BAR
+        const progressFill =
+            document.querySelector(".progress-fill");
+
+        if (progressFill) {
+
+            const width =
+                progressFill.getAttribute("data-width");
+
+            progressFill.style.width = width + "%";
+
+        }
+
     </script>
 
 </body>
+
 </html>
