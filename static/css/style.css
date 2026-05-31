@@ -449,20 +449,28 @@ body::before {
 /* RESULT BADGE */
 
 .result-badge {
-
-  display: inline-block;
-
-  padding: 7px 14px;
-
-  border-radius: 20px;
-
-  background: rgba(0, 255, 204, 0.15);
-
-  color: #00ffcc;
-
-  margin-bottom: 14px;
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: rgba(0, 255, 204, 0.15);
+    color: #00ffcc;
+    margin-bottom: 14px;
+    /* Micro‑animation */
+    animation: badgePop 0.5s ease-out forwards;
+    /* Smooth color/background transition on state change */
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
+@keyframes badgePop {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 /* RESULT TITLE */
 
 .result-title {
