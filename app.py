@@ -4,8 +4,15 @@ import json
 import uuid
 import tensorflow as tf
 import os
-from tensorflow.keras.applications.efficientnet_v2 import preprocess_input
+from tensorflow.keras.applications.efficientnet_v2 import preprocess_input  # type: ignore
 
+from werkzeug.utils import secure_filename
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 app = Flask(__name__)
 
 # Load trained model
@@ -78,28 +85,38 @@ def model_predict(image_path):
 
 @app.route('/upload/', methods=['POST'])
 def uploadimage():
+    if 'img' not in request.files:
+        return redirect('/')
+    
     image = request.files['img']
-    os.makedirs("uploadimages", exist_ok=True)
+    
+    if image.filename == '':
+        return redirect('/')
+        
+    if image and allowed_file(image.filename):
+        os.makedirs("uploadimages", exist_ok=True)
+        filename = secure_filename(image.filename)
+        temp_name = f"uploadimages/temp_{uuid.uuid4().hex}_{filename}"
+        image.save(temp_name)
 
-    temp_name = f"uploadimages/temp_{uuid.uuid4().hex}_{image.filename}"
-    image.save(temp_name)
+        # Predict class + confidence
+        label, confidence = model_predict(temp_name)
 
-    # Predict class + confidence
-    label, confidence = model_predict(temp_name)
+        # Get cause & solution (GAP 2)
+        cause = disease_info.get(label, {}).get("cause", "Unknown cause")
+        solution = disease_info.get(label, {}).get("solution", "No solution found")
 
-    # Get cause & solution (GAP 2)
-    cause = disease_info[label]["cause"]
-    solution = disease_info[label]["solution"]
-
-    return render_template(
-        'home.html',
-        result=True,
-        imagepath='/' + temp_name,
-        prediction=label,
-        confidence=round(confidence, 2),
-        cause=cause,
-        solution=solution
-    )
+        return render_template(
+            'home.html',
+            result=True,
+            imagepath='/' + temp_name,
+            prediction=label,
+            confidence=round(confidence, 2),
+            cause=cause,
+            solution=solution
+        )
+    else:
+        return render_template('home.html', error="Invalid file type. Please upload a PNG, JPG, or JPEG image.")
 
 if __name__ == "__main__":
     app.run(debug=True)

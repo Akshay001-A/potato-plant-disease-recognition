@@ -23,6 +23,13 @@
 
 <body>
 
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 4rem; margin-bottom: 1rem; color: #71B280;"></i>
+        <h2 style="font-family: 'Poppins', sans-serif; letter-spacing: 1px;">Analyzing Plant Leaf...</h2>
+        <p style="font-family: 'Poppins', sans-serif; opacity: 0.8; margin-top: 10px;">Please wait while our AI model predicts the disease.</p>
+    </div>
+
     <!-- PARTICLES -->
     <div class="particles">
 
@@ -81,15 +88,15 @@
             <form action="/upload/" method="POST" enctype="multipart/form-data" class="upload-form">
 
                 <!-- FILE INPUT -->
-                <label class="file-upload">
+                <label class="file-upload" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
 
                     <input type="file" name="img" id="fileInput" accept="image/png,image/jpeg" required>
 
-                    <div class="upload-content">
+                    <div class="upload-content" id="uploadContent">
 
-                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon" id="uploadIcon"></i>
 
-                        <h3>Select Plant Image</h3>
+                        <h3 id="uploadTitle">Select Plant Image</h3>
 
                         <p id="fileText">
 
@@ -98,6 +105,9 @@
                         </p>
 
                     </div>
+
+                    <!-- IMAGE THUMBNAIL PREVIEW -->
+                    <img id="imagePreview" style="display: none; max-width: 100%; max-height: 180px; border-radius: 8px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" />
 
                 </label>
 
@@ -119,6 +129,13 @@
                 </button>
 
             </form>
+
+            <!-- ERROR MESSAGE -->
+            {% if error %}
+            <div class="error-message" style="color: #ff4d4d; background: #ffe6e6; padding: 10px; border-radius: 5px; margin-top: 15px; text-align: center; border: 1px solid #ff4d4d;">
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+            </div>
+            {% endif %}
 
             <!-- RESULT -->
             {% if result %}
@@ -238,33 +255,44 @@
     <!-- JAVASCRIPT -->
     <script>
 
-        // FILE NAME PREVIEW
-        const fileInput =
-            document.getElementById("fileInput");
-
-        const fileText =
-            document.getElementById("fileText");
+        // FILE NAME AND THUMBNAIL PREVIEW
+        const fileInput = document.getElementById("fileInput");
+        const fileText = document.getElementById("fileText");
+        const imagePreview = document.getElementById("imagePreview");
+        const uploadIcon = document.getElementById("uploadIcon");
+        const uploadTitle = document.getElementById("uploadTitle");
 
         fileInput.addEventListener("change", function () {
-
-            const fileName =
-                this.files[0]?.name ||
-                "Drag & Drop or Click to Upload";
-
-            fileText.innerText = fileName;
-
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                fileText.innerText = "Selected: " + file.name;
+                
+                // Read and show thumbnail
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = "block";
+                    if (uploadIcon) uploadIcon.style.display = "none";
+                    if (uploadTitle) uploadTitle.style.display = "none";
+                }
+                reader.readAsDataURL(file);
+            } else {
+                fileText.innerText = "Drag & Drop or Click to Upload";
+                imagePreview.style.display = "none";
+                if (uploadIcon) uploadIcon.style.display = "block";
+                if (uploadTitle) uploadTitle.style.display = "block";
+            }
         });
 
-        // BUTTON LOADING
-        const analyzeBtn =
-            document.getElementById("analyzeBtn");
+        // FORM SUBMIT LOADING OVERLAY
+        const uploadForm = document.querySelector(".upload-form");
+        const loadingOverlay = document.getElementById("loadingOverlay");
 
-        analyzeBtn.addEventListener("click", () => {
-
-            analyzeBtn.innerHTML =
-                `<i class="fa-solid fa-spinner fa-spin"></i> Analyzing...`;
-
-        });
+        if (uploadForm) {
+            uploadForm.addEventListener("submit", () => {
+                loadingOverlay.style.display = "flex";
+            });
+        }
 
         // PROGRESS BAR
         const progressFill =
