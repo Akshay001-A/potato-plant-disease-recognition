@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect, send_from_directory, jsonify
 import numpy as np
 import json
 import uuid
@@ -132,6 +132,41 @@ def uploadimage():
         )
     else:
         return render_template('home.html', error="Invalid file type. Please upload a PNG, JPG, or JPEG image.")
+
+@app.route('/api/predict', methods=['POST'])
+def api_predict():
+    """REST API Endpoint for mobile apps or external integrations."""
+    if 'img' not in request.files:
+        return jsonify({"error": "No image file provided in request."}), 400
+    
+    image = request.files['img']
+    
+    if image.filename == '':
+        return jsonify({"error": "Empty filename."}), 400
+        
+    if image and allowed_file(image.filename):
+        img_bytes = image.read()
+        
+        try:
+            image_stream = io.BytesIO(img_bytes)
+            label, confidence = model_predict(image_stream)
+        except Exception as e:
+            return jsonify({"error": "Failed to analyze image. It might be corrupted."}), 500
+
+        cause = disease_info.get(label, {}).get("cause", "Unknown cause")
+        solution = disease_info.get(label, {}).get("solution", "No solution found")
+        is_healthy = ("healthy" in label.lower())
+
+        return jsonify({
+            "status": "success",
+            "prediction": label,
+            "confidence": round(confidence, 2),
+            "cause": cause,
+            "solution": solution,
+            "is_healthy": is_healthy
+        })
+        
+    return jsonify({"error": "Invalid file type. Allowed types are png, jpg, jpeg."}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
