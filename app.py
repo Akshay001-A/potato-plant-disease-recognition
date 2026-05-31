@@ -101,7 +101,11 @@ def uploadimage():
         image.save(temp_name)
 
         # Predict class + confidence
-        label, confidence = model_predict(temp_name)
+        try:
+            label, confidence = model_predict(temp_name)
+        except Exception as e:
+            # Safely catch any TensorFlow/Keras or Image processing errors
+            return render_template('home.html', error="Failed to analyze image. The image might be corrupted or unreadable.")
 
         # Get cause & solution (GAP 2)
         cause = disease_info.get(label, {}).get("cause", "Unknown cause")
