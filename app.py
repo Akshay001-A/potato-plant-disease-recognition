@@ -4,6 +4,9 @@ import json
 import uuid
 import tensorflow as tf
 import os
+import io
+import base64
+from PIL import Image
 from tensorflow.keras.applications.efficientnet_v2 import preprocess_input  # type: ignore
 
 from werkzeug.utils import secure_filename
@@ -64,18 +67,21 @@ def uploaded_images(filename):
 def home():
     return render_template('home.html')
 
-def extract_features(image_path):
-    """Load and preprocess image for EfficientNetV2"""
-    img = tf.keras.utils.load_img(image_path, target_size=(420, 420))
+def extract_features(image_stream):
+    """Load and preprocess image for EfficientNetV2 directly from memory"""
+    img = Image.open(image_stream)
+    if img.mode != 'RGB':
+        img = img.convert('RGB')
+    img = img.resize((420, 420))
     img = tf.keras.utils.img_to_array(img)
 
     img = preprocess_input(img)
     img = np.expand_dims(img, axis=0)
     return img
 
-def model_predict(image_path):
+def model_predict(image_stream):
     """Predict disease"""
-    img = extract_features(image_path)
+    img = extract_features(image_stream)
     predictions = model.predict(img)[0]
 
     index = np.argmax(predictions)
@@ -95,14 +101,18 @@ def uploadimage():
         return redirect('/')
         
     if image and allowed_file(image.filename):
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        filename = secure_filename(image.filename)
-        temp_name = f"{app.config['UPLOAD_FOLDER']}/temp_{uuid.uuid4().hex}_{filename}"
-        image.save(temp_name)
+        # Read image to memory
+        img_bytes = image.read()
+        
+        # Base64 encode for UI
+        img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+        mime_type = "image/png" if image.filename.lower().endswith("png") else "image/jpeg"
+        data_uri = f"data:{mime_type};base64,{img_base64}"
 
         # Predict class + confidence
         try:
-            label, confidence = model_predict(temp_name)
+            image_stream = io.BytesIO(img_bytes)
+            label, confidence = model_predict(image_stream)
         except Exception as e:
             # Safely catch any TensorFlow/Keras or Image processing errors
             return render_template('home.html', error="Failed to analyze image. The image might be corrupted or unreadable.")
@@ -115,7 +125,7 @@ def uploadimage():
         return render_template(
             'home.html',
             result=True,
-            imagepath='/' + temp_name,
+            imagepath=data_uri,
             prediction=label,
             confidence=round(confidence, 2),
             cause=cause,
