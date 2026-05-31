@@ -7,19 +7,20 @@ import os
 from tensorflow.keras.applications.efficientnet_v2 import preprocess_input  # type: ignore
 
 from werkzeug.utils import secure_filename
-
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+from config import Config
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
+
 app = Flask(__name__)
+app.config.from_object(Config)
 
 # Load trained model
-model = tf.keras.models.load_model("models/plant_disease_recog_model1.keras")
+model = tf.keras.models.load_model(app.config['MODEL_PATH'])
 
 # Load class names
-with open("plant_disease.json", "r") as file:
+with open(app.config['CLASS_NAMES_PATH'], "r") as file:
     class_names = json.load(file)
 
 # ---------------------- GAP 2: CAUSE & SOLUTION ----------------------
@@ -57,7 +58,7 @@ disease_info = {
 
 @app.route('/uploadimages/<path:filename>')
 def uploaded_images(filename):
-    return send_from_directory('./uploadimages', filename)
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/')
 def home():
@@ -94,9 +95,9 @@ def uploadimage():
         return redirect('/')
         
     if image and allowed_file(image.filename):
-        os.makedirs("uploadimages", exist_ok=True)
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
         filename = secure_filename(image.filename)
-        temp_name = f"uploadimages/temp_{uuid.uuid4().hex}_{filename}"
+        temp_name = f"{app.config['UPLOAD_FOLDER']}/temp_{uuid.uuid4().hex}_{filename}"
         image.save(temp_name)
 
         # Predict class + confidence
