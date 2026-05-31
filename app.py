@@ -59,9 +59,7 @@ disease_info = {
 }
 # ---------------------------------------------------------------------
 
-@app.route('/uploadimages/<path:filename>')
-def uploaded_images(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 @app.route('/')
 def home():
