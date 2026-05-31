@@ -153,14 +153,14 @@
                 <div class="result-details">
 
                     <!-- RESULT BADGE -->
-                    <div class="result-badge">
+                    <div class="result-badge" {% if not is_healthy %}style="background: #ffe6e6; color: #dc3545;"{% else %}style="background: #e6ffe6; color: #28a745;"{% endif %}>
 
-                        Prediction Result
+                        {% if not is_healthy %}Disease Detected{% else %}Healthy Plant{% endif %}
 
                     </div>
 
                     <!-- PREDICTION -->
-                    <h2 class="result-title">
+                    <h2 class="result-title" {% if not is_healthy %}style="color: #dc3545;"{% else %}style="color: #28a745;"{% endif %}>
 
                         {{ prediction }}
 
@@ -184,7 +184,7 @@
                         <!-- PROGRESS BAR -->
                         <div class="progress-bar">
 
-                            <div class="progress-fill" data-width="{{ confidence | default(0) | round(2) }}">
+                            <div class="progress-fill" data-width="{{ confidence | default(0) | round(2) }}" {% if not is_healthy %}style="background: #dc3545;"{% else %}style="background: #28a745;"{% endif %}>
                             </div>
 
                         </div>

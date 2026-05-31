@@ -106,6 +106,7 @@ def uploadimage():
         # Get cause & solution (GAP 2)
         cause = disease_info.get(label, {}).get("cause", "Unknown cause")
         solution = disease_info.get(label, {}).get("solution", "No solution found")
+        is_healthy = ("healthy" in label.lower())
 
         return render_template(
             'home.html',
@@ -114,7 +115,8 @@ def uploadimage():
             prediction=label,
             confidence=round(confidence, 2),
             cause=cause,
-            solution=solution
+            solution=solution,
+            is_healthy=is_healthy
         )
     else:
         return render_template('home.html', error="Invalid file type. Please upload a PNG, JPG, or JPEG image.")
