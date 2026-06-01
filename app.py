@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, redirect, send_from_directory
 import numpy as np
 import json
 import uuid
+import os
+os.environ["TF_DISABLE_ONEDNN"] = "1"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 try:
     import tensorflow as tf
 except Exception as e:
