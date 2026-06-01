@@ -427,7 +427,24 @@ def delete_history(prediction_id):
         return jsonify({
             "success": False
         }), 500
-        
+@app.route('/clear_history', methods=['DELETE'])
+def clear_history():
+
+    if 'user_id' not in session:
+        return jsonify({
+            "success": False
+        }), 401
+
+    result = predictions_collection.delete_many({
+
+        "user_id": session['user_id']
+
+    })
+
+    return jsonify({
+        "success": True,
+        "deleted_count": result.deleted_count
+    })
 if __name__ == "__main__":
     app.secret_key = os.getenv(
         'SECRET_KEY',

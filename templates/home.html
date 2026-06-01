@@ -251,6 +251,65 @@
     }
 
 
+async function clearHistory() {
+
+    const confirmClear =
+        confirm(
+            'Delete ALL history?'
+        );
+
+    if (!confirmClear)
+        return;
+
+    try {
+
+        const response =
+            await fetch(
+                '/clear_history',
+                {
+                    method: 'DELETE'
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (data.success) {
+
+            loadHistory();
+
+        }
+
+    }
+    catch(err) {
+
+        console.error(err);
+
+    }
+
+}
+
+document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        const clearBtn =
+            document.getElementById(
+                'clearHistoryBtn'
+            );
+
+        if(clearBtn){
+
+            clearBtn.addEventListener(
+                'click',
+                clearHistory
+            );
+
+        }
+
+    }
+);
+
 </script>
 
 
