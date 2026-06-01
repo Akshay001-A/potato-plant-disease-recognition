@@ -1,0 +1,88 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  /* hidden off-screen */
+  width: 320px;
+  top: 0;
+  bottom: 0; /* ensure full height */
+  height: auto;
+  /* layered background: dark green overlay + image */
+  background: linear-gradient(rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.38)), url('../images/sidebar_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(12px) saturate(150%);
+  color: #00ffcc;
+  z-index: 2000;
+  padding: 24px 20px;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+  transition: left 0.35s ease;
+  overflow-y: auto;
+  border-left: 1px solid rgba(255, 255, 124, 0.12);
+  border-radius: 0 12px 12px 0;
+  /* smooth rounded edge on right side */
+  box-sizing: border-box;
+  /* ensure padding doesn't cause overflow */
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar .close-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.sidebar h2 {
+  margin-top: 48px;
+  margin-bottom: 24px;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #00ffcc;
+}
+
+.sidebar .auth-btn {
+  display: block;
+  width: 100%;
+  margin: 12px 0;
+  padding: 12px;
+  background: linear-gradient(135deg, #00ffcc, #0099ff);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sidebar .auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 204, 0.3);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: none;
+  z-index: 1999;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+@media(max-width:768px) {
+  .sidebar {
+    width: 280px;
+    /* slightly smaller for mobile but still visible */
+  }
+}
