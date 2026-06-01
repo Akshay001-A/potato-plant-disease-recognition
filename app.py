@@ -1,3 +1,4 @@
+print("RUNNING APP FILE:", __file__)
 from flask import Flask, render_template, request, redirect, send_from_directory, jsonify, session, flash, url_for
 import numpy as np
 import json
@@ -5,21 +6,16 @@ import uuid
 import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from datetime import datetime
+
 load_dotenv()
 import logging
 
 from io import BytesIO
 
-from flask import send_file
 
-from reportlab.platypus import (
-    SimpleDocTemplate,
-    Paragraph,
-    Spacer
-)
 
-from reportlab.lib.styles import getSampleStyleSheet
+
+from datetime import datetime
 
 # MongoDB connection
 MONGO_URI = os.getenv('MONGO_URI')
@@ -556,69 +552,6 @@ def dashboard_trend():
     return jsonify(data)
 
 
-@app.route('/download_report')
-def download_report():
-
-    prediction = session.get('last_prediction')
-
-    if not prediction:
-        return "No prediction available", 404
-
-    buffer = BytesIO()
-
-    doc = SimpleDocTemplate(buffer)
-
-    styles = getSampleStyleSheet()
-
-    elements = []
-
-    elements.append(
-        Paragraph(
-            "Potato Guard Disease Report",
-            styles['Title']
-        )
-    )
-
-    elements.append(Spacer(1, 20))
-
-    elements.append(
-        Paragraph(
-            f"<b>Disease:</b> {prediction['label']}",
-            styles['Normal']
-        )
-    )
-
-    elements.append(
-        Paragraph(
-            f"<b>Confidence:</b> {prediction['confidence']:.2f}%",
-            styles['Normal']
-        )
-    )
-
-    elements.append(
-        Paragraph(
-            f"<b>Cause:</b> {prediction['cause']}",
-            styles['Normal']
-        )
-    )
-
-    elements.append(
-        Paragraph(
-            f"<b>Solution:</b> {prediction['solution']}",
-            styles['Normal']
-        )
-    )
-
-    doc.build(elements)
-
-    buffer.seek(0)
-
-    return send_file(
-        buffer,
-        as_attachment=True,
-        download_name='potato_guard_report.pdf',
-        mimetype='application/pdf'
-    )
 
 
 if __name__ == "__main__":
