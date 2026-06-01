@@ -2,3 +2,4 @@ models/*.keras
 __pycache__/
 uploadimages/
 *.pyc
+.env

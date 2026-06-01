@@ -24,12 +24,7 @@
 
 <body>
     <!-- SIDEBAR -->
-    <div id="sidebar" class="sidebar">
-        <button id="closeSidebar" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
-        <h2>History</h2>
-        <button class="auth-btn">Sign In</button>
-        <button class="auth-btn">Sign Up</button>
-    </div>
+    {% include 'sidebar.html' %}
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
     <!-- LOADING OVERLAY -->
@@ -64,6 +59,7 @@
             Potato Guard
 
         </div>
+        <a href="{{ url_for('signup') }}" class="nav-auth-btn">Sign Up</a>
 
     </nav>
 

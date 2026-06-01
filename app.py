@@ -1,23 +1,59 @@
-from flask import Flask, render_template, request, redirect, send_from_directory, jsonify
+from flask import Flask, render_template, request, redirect, send_from_directory, jsonify, session, flash, url_for
 import numpy as np
 import json
 import uuid
 import os
+from pymongo import MongoClient
+from dotenv import load_dotenv
+from datetime import datetime
+load_dotenv()
+
+# MongoDB connection
+MONGO_URI = os.getenv('MONGO_URI')
+if not MONGO_URI:
+    raise RuntimeError("MONGO_URI not set in .env – please provide your MongoDB Atlas connection string")
+mongo_client = MongoClient(MONGO_URI)
+mongo_db = mongo_client['potato_disease_db']
+users_collection = mongo_db['users']  # Store user credentials
+predictions_collection = mongo_db['predictions']  # Store predictions
+def save_prediction(label, confidence, cause, solution, is_healthy, image_data_uri):
+    """Save prediction details to MongoDB.
+    Parameters:
+        label (str): Predicted disease label.
+        confidence (float): Confidence percentage.
+        cause (str): Cause description.
+        solution (str): Suggested solution.
+        is_healthy (bool): Whether prediction indicates healthy.
+        image_data_uri (str): Base64 data URI of the uploaded image.
+    """
+    try:
+        predictions_collection.insert_one({
+            "label": label,
+            "confidence": confidence,
+            "cause": cause,
+            "solution": solution,
+            "is_healthy": is_healthy,
+            "image": image_data_uri,
+            "timestamp": datetime.utcnow()
+        })
+    except Exception as e:
+        print('Failed to save prediction to MongoDB:', repr(e))
 os.environ["TF_DISABLE_ONEDNN"] = "1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 try:
     import tensorflow as tf
 except Exception as e:
-    print('⚠️ TensorFlow import failed:', e)
+    print('TensorFlow import failed:', e)
     tf = None
 import os
 import io
 import base64
 from PIL import Image
+from datetime import datetime
 try:
     from tensorflow.keras.applications.efficientnet_v2 import preprocess_input  # type: ignore
 except Exception as e:
-    print('⚠️ preprocess_input import failed:', e)
+    print('preprocess_input import failed:', e)
     def preprocess_input(x):
         return x
 
@@ -36,10 +72,10 @@ if tf is not None:
     try:
         model = tf.keras.models.load_model(app.config['MODEL_PATH'])
     except Exception as e:
-        print('⚠️ Model loading failed:', e)
+        print('Model loading failed:', e)
         model = None
 else:
-    print('⚠️ TensorFlow not available, model disabled')
+    print('TensorFlow not available, model disabled')
     model = None
 
 # Load class names
@@ -84,6 +120,56 @@ disease_info = {
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        if not (email and password):
+            flash('Email and password required.', 'error')
+            return render_template('signin.html')
+        user = users_collection.find_one({'email': email})
+        if not user:
+            flash('No account with that email.', 'error')
+            return render_template('signin.html')
+        from werkzeug.security import check_password_hash
+        if not check_password_hash(user['password'], password):
+            flash('Incorrect password.', 'error')
+            return render_template('signin.html')
+        # login successful
+        session['user_id'] = str(user['_id'])
+        session['user_name'] = user.get('name')
+        flash('Signed in successfully.', 'success')
+        return redirect(url_for('home'))
+    return render_template('signin.html')
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        address = request.form.get('address')
+        if not (name and email and password and address):
+            flash('All fields are required.', 'error')
+            return render_template('signup.html')
+        # Check if user already exists
+        if users_collection.find_one({'email': email}):
+            flash('Email already registered.', 'error')
+            return render_template('signup.html')
+        from werkzeug.security import generate_password_hash
+        hashed = generate_password_hash(password)
+        users_collection.insert_one({
+            'name': name,
+            'email': email,
+            'password': hashed,
+            'address': address,
+            'created_at': datetime.utcnow()
+        })
+        flash('Signup successful! Please sign in.', 'success')
+        return redirect(url_for('signin'))
+    return render_template('signup.html')
+
 
 def extract_features(image_stream):
     """Load and preprocess image for EfficientNetV2 directly from memory"""
@@ -141,6 +227,8 @@ def uploadimage():
         cause = disease_info.get(label, {}).get("cause", "Unknown cause")
         solution = disease_info.get(label, {}).get("solution", "No solution found")
         is_healthy = ("healthy" in label.lower())
+        # Save prediction to MongoDB
+        save_prediction(label, confidence, cause, solution, is_healthy, data_uri)
 
         return render_template(
             'home.html',
@@ -191,4 +279,5 @@ def api_predict():
     return jsonify({"error": "Invalid file type. Allowed types are png, jpg, jpeg."}), 400
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.secret_key = os.getenv('SECRET_KEY', 'potato-plant-secret-key-123')
+app.run(debug=True, use_reloader=False)
