@@ -11,14 +11,15 @@
   <img src="https://img.shields.io/badge/Flask-Web_App-black?style=for-the-badge&logo=flask"/>
   <img src="https://img.shields.io/badge/TensorFlow-Deep_Learning-orange?style=for-the-badge&logo=tensorflow"/>
   <img src="https://img.shields.io/badge/Keras-Neural_Networks-red?style=for-the-badge&logo=keras"/>
-  <img src="https://img.shields.io/badge/AI-Plant_Disease_Detection-green?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/MongoDB-Atlas_Database-green?style=for-the-badge&logo=mongodb"/>
+  <img src="https://img.shields.io/badge/Docker-Containerization-blue?style=for-the-badge&logo=docker"/>
 </p>
 
 ---
 
 ### 🚀 Detect Potato Plant Diseases Using Deep Learning & Image Classification
 
-📷 Upload Leaf Images • 🧠 AI Prediction • 🌱 Disease Recognition • 📊 Confidence Score • 💡 Cause & Solution
+📷 Upload Leaf Images • 🧠 In-Memory AI Prediction • 🌱 7 Disease Classes Recognition • 📊 Live Metrics & History Dashboard • 💡 Cause & Treatment
 
 </div>
 
@@ -26,179 +27,145 @@
 
 # 🌟 Project Overview
 
-Potato Plant Disease Recognition is an AI-powered web application developed using Deep Learning and TensorFlow to identify diseases in potato plant leaves from uploaded images.
+**Potato Plant Leaf Disease Recognition** is a production-grade, AI-powered web ecosystem designed to help farmers, agriculturalists, and researchers diagnose plant leaf diseases instantly. By leveraging deep learning models, the system automates leaf health assessment directly from uploaded images.
 
-The system predicts whether the plant is:
+The system is trained using a **Convolutional Neural Network (CNN)** (EfficientNetV2 based architecture) and supports classification across **7 different health and disease classes**:
 
-✅ Healthy  
-❌ Early Blight  
-❌ Late Blight  
+*   **Bacteria** (Bacterial infections)
+*   **Fungi** (Fungal spot infections)
+*   **Healthy** (Optimal plant leaf state)
+*   **Nematode** (Parasitic worm damage)
+*   **Pest** (Insect or beetle leaf damage)
+*   **Phytopthora** (Late Blight pathogen)
+*   **Virus** (Viral leaf diseases)
 
-using a trained Convolutional Neural Network (CNN) model.
-
-The application provides:
-
-✨ Instant Disease Detection  
-✨ Confidence Score Prediction  
-✨ Disease Cause Analysis  
-✨ Suggested Solutions  
-✨ Modern Flask-Based Web Interface  
-
-This project helps farmers and agricultural researchers detect diseases early and improve crop management.
-
----
-
-# ✨ Main Features
+To provide an elite user experience, the system includes:
+*   **🔐 Complete Authentication System:** Secured sign-up/sign-in flows with encrypted password hashing.
+*   **⚡ Zero-Disk Storage Pipeline:** In-memory, non-disk image classification utilizing `BytesIO` streams.
+*   **📁 MongoDB Atlas Integration:** Persistent profiles and chronological leaf diagnosis history records.
+*   **🔄 Interactive Logs Sidebar:** Complete with thumbnail grids, modal-based detailed reviews, and CRUD history controls.
+*   **📊 Statistics & Analytics Dashboard:** Visual counter cards displaying user statistics and infection trend insights.
+*   **🌐 REST API Integration:** Dedicated `/api/predict` endpoint for mobile or external hardware integration.
+*   **🐳 Dockerized Container Environment:** Ready-to-go multi-stage container configuration.
 
 ---
 
-# 🌿 Plant Disease Detection
+# ✨ Core Features
 
-✅ Upload Potato Leaf Images  
-✅ Deep Learning Based Prediction  
-✅ Healthy vs Diseased Classification  
-✅ Confidence Score Display  
-✅ Instant AI Prediction Results  
+### 🌿 1. Deep Learning Image Recognition
+*   Drag-and-drop or file selector leaf uploads.
+*   In-memory Pillow preprocessor streams (no temp files created on the server's hard drive).
+*   Live confidence progress bars featuring contextual color styles based on diagnostics (Green for Healthy, Red for Diseased).
 
----
+### 💡 2. Live Actionable Diagnostics
+*   Instantly maps the predicted class to localized **Cause** and **Recommended Solution** guides.
+*   Assists farmers with immediate prevention strategies (e.g. copper-based bactericides, fungicides, nematicides, crop spacing).
 
-# 🧠 AI Prediction System
+### 📁 3. Interactive Chronological Log History
+*   **Historical Sidebar Grid:** Displays thumbnail previews, date, time, and predicted labels for past uploads.
+*   **Dynamic Detailed Modals:** Click on any past prediction to view a detailed popup with the original image, classification scores, and complete disease information.
+*   **History Controls:** Provides tools to delete individual records or clean the entire history stack.
 
-The system uses a trained TensorFlow/Keras model for:
+### 🔐 4. Secured Authentication & Profile System
+*   Register users with Name, Email, Address, and credentials.
+*   Uses `werkzeug.security` secure password hashing rules.
+*   Custom profile manager panel to update user info on-the-fly.
 
-🌱 Image Classification  
-🧬 Disease Recognition  
-📊 Confidence Prediction  
-⚡ Fast Real-Time Processing  
+### 📊 5. Statistics Dashboard
+*   Summarizes diagnostic insights into visually aesthetic metric cards:
+    *   **Total Predictions Logged**
+    *   **Healthy Leaves Checked**
+    *   **Diseased Leaves Diagnosed**
+    *   **Most Common Infection Found**
+*   Includes trend and recent activity panels.
 
----
-
-# 💡 Disease Information System
-
-For detected diseases, the system provides:
-
-✅ Disease Cause  
-✅ Prevention Methods  
-✅ Suggested Solutions  
-✅ Crop Safety Recommendations  
-
----
-
-# 🎨 Modern User Interface
-
-✨ Responsive Flask Web App  
-✨ Interactive Upload Interface  
-✨ Professional Design Layout  
-✨ Clean Prediction Display  
-✨ Smooth User Experience  
-
----
-
-# 📸 Application Screenshots
-
----
-
-## 🏠 Home Page
-
-Modern image upload interface for potato leaf disease detection.
-
-<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/planthome.png" width="100%"/>
-
----
-
-## 📊 Disease Prediction Result
-
-AI prediction result with confidence score and disease information.
-
-<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/prediction.png" width="100%"/>
+### 🌐 6. REST API Endpoint
+*   Exposes a high-performance POST endpoint at `/api/predict` for external integrations (Mobile apps, drones, IoT hardware).
+*   Returns JSON structures with labels, confidence scores, and crop care recommendations.
 
 ---
 
 # 🛠 Tech Stack
 
-<div align="center">
-
-| Category | Technologies |
+| Component | Technologies Used |
 |---|---|
-| Backend | Flask, Python |
-| Frontend | HTML, CSS, JavaScript |
-| Deep Learning | TensorFlow, Keras |
-| Data Processing | NumPy, Pillow |
-| AI Model | CNN Image Classification |
-
-</div>
+| **Backend Engine** | Flask, Python, Werkzeug Security, python-dotenv |
+| **Deep Learning & AI** | TensorFlow, Keras, EfficientNetV2, NumPy |
+| **Image Pipeline** | Pillow (PIL), BytesIO, Base64 URI Encoding |
+| **Database** | MongoDB Atlas, PyMongo, BSON ObjectId |
+| **Containerization** | Docker, multi-stage debian-slim build |
+| **Frontend UI/UX** | HTML5, Modern HSL CSS3, JavaScript, FontAwesome Icons, Poppins Font |
 
 ---
 
-# 🧠 Deep Learning Model
+# 📸 Application Screenshots
 
-The application uses a trained:
-
-# 🧬 Convolutional Neural Network (CNN)
-
-for potato leaf disease classification.
-
-The model analyzes uploaded leaf images and predicts:
-
-✅ Healthy Potato Leaf  
-❌ Early Blight Disease  
-❌ Late Blight Disease  
-
-with confidence scores.
+### 🏠 Home Page
+Modern image upload interface featuring loading overlays and animated particle backgrounds:
+<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/planthome.png" width="100%"/>
 
 ---
 
-# 🌱 Disease Classes
+### 📊 Disease Prediction Result
+AI prediction result card displaying the classified label, confidence progress bars, and localized solutions:
+<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/prediction.png" width="100%"/>
 
-| Disease | Status |
-|---|---|
-| Healthy | ✅ |
-| Early Blight | ❌ |
-| Late Blight | ❌ |
+---
+
+# 🧬 Leaf Diagnosis Classes
+
+| Class | Type | Diagnostic Condition | Care Strategy |
+|---|---|---|---|
+| **Healthy** | ✅ Optimal | Free of pathogens or leaf spots | Maintain irrigation and field hygiene |
+| **Bacteria** | ❌ Infection | Pathogenic bacterial leaf damage | Use copper-based bactericides |
+| **Fungi** | ❌ Infection | Fungal spot lesions (Alternaria) | Apply chlorothalonil or mancozeb |
+| **Nematode** | ❌ Parasitic | Microscopic worm root/vascular damage | Soil sterilization and crop rotation |
+| **Pest** | ❌ Infestation | Visual leaf chewing damage (beetles) | Apply neem oil or insecticidal soap |
+| **Phytopthora** | ❌ Blight | Late Blight leaf decay | Metalaxyl-based treatments & spacing |
+| **Virus** | ❌ Pathogen | Deformed leaves & chlorotic veins | Remove host vector insects like aphids |
 
 ---
 
 # ⚡ Quick Start
 
----
-
-# 📥 Clone Repository
-
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/Akshay001-A/potato-plant-disease-recognition.git
-```
-
----
-
-# 📂 Navigate Into Project Folder
-
-```bash
 cd potato-plant-disease-recognition
 ```
 
+### 2️⃣ Configure Environments
+Create a `.env` file in the root directory and add your secret credentials:
+```env
+SECRET_KEY=your_flask_secret_key_here
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/potato_disease_db
+```
+
+### 3️⃣ AI Model Setup
+The trained deep learning model is not pushed to the repository due to its large size.
+*   **Download Link:** [Google Drive Model Download](https://drive.google.com/file/d/1jQLlUoyXaTr4wTnRKv-5uydloXUJnDQF/view)
+*   Place the downloaded `.keras` file in:
+    ```text
+    models/plant_disease_recog_model1.keras
+    ```
+
 ---
 
-# 📦 Install Dependencies
+# 🐳 Running with Docker
 
+This application is fully containerized! You can build and spin up the microservice within seconds.
+
+### 🛠 Build the Docker Image
 ```bash
-pip install -r requirements.txt
+docker build -t potato-disease-app .
 ```
 
----
-
-# 🧠 Model Download
-
-The trained AI model is not included in this repository because it exceeds GitHub's file size limit.
-
-Download the model from Google Drive:
-
-🔗 https://drive.google.com/file/d/1jQLlUoyXaTr4wTnRKv-5uydloXUJnDQF/view
-
-After downloading, place the model inside:
-
-```text
-models/
+### 🚀 Run the Container
+Pass your environment variables or point to your `.env` file to launch:
+```bash
+docker run -p 5000:5000 --env-file .env potato-disease-app
 ```
+Access the application on: **`http://localhost:5000`**
 
 ---
 
@@ -206,108 +173,71 @@ models/
 
 ```text
 potato-plant-disease-recognition/
-│
-├── app.py
-├── plant_disease.json
-├── README.md
-├── LICENSE
-├── requirements.txt
-│
 ├── models/
-│   └── plant_disease_recog_model1.keras
-│
+│   └── plant_disease_recog_model1.keras    # Deep Learning Model
 ├── static/
-│   ├── images/
-│   └── css/
-│
+│   ├── css/
+│   │   ├── style.css                      # Base layout styles
+│   │   ├── sidebar.css                    # History slider UI
+│   │   ├── dashboard.css                  # Stats styling
+│   │   ├── profile.css                    # User profile layouts
+│   │   ├── signin.css
+│   │   └── signup.css
+│   └── images/
 ├── templates/
-│
-└── uploadimages/
+│   ├── home.html                           # Main app shell
+│   ├── sidebar.html                        # Logs sidebar fragment
+│   ├── dashboard.html                      # Interactive analytics
+│   ├── profile.html                        # Account manager
+│   ├── signin.html                         # Login screen
+│   └── signup.html                         # Signup screen
+├── app.py                                  # Core Flask Application
+├── config.py                               # Global Configuration Setup
+├── plant_disease.json                      # Disease labels index
+├── Dockerfile                              # Multi-stage Container script
+├── requirements.txt                        # App dependencies
+└── README.md                               # Project documentation
 ```
 
 ---
 
-# ▶️ Run Application
-
-Start the Flask server:
-
-```bash
-python app.py
-```
-
----
-
-# 🌐 Open Browser
+# 🔍 Internal Pipeline & Workflow
 
 ```text
-http://127.0.0.1:5000
+[User Uploads Image] 
+         │
+         ▼
+[BytesIO Memory Stream] ──► (No files saved to host disk)
+         │
+         ▼
+[EfficientNetV2 Preprocessing] (Resized to 420x420, normalized)
+         │
+         ▼
+[Deep Learning Model Prediction] ──► (Keras Classification Inference)
+         │
+         ▼
+[MongoDB Persistence] ──► (Saves prediction log + base64 image data to predictions collection)
+         │
+         ▼
+[Dynamic Render Output] ──► (Displays color-coded results, solutions, and updates sidebar logs)
 ```
 
 ---
 
-# 🔍 Prediction Workflow
-
-The application workflow includes:
-
-1️⃣ Upload Potato Leaf Image  
-2️⃣ Image Preprocessing  
-3️⃣ CNN Model Prediction  
-4️⃣ Disease Classification  
-5️⃣ Confidence Score Generation  
-6️⃣ Cause & Solution Display  
-
----
-
-# 📦 Requirements
-
-Main dependencies used in the project:
-
-```text
-flask
-tensorflow
-keras
-numpy
-pillow
-gdown
-```
-
-Install all requirements:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-# 🚀 Future Improvements
-
-🌍 Multi-Crop Disease Detection  
-📱 Mobile Application Support  
-☁ Cloud Deployment  
-📊 Advanced AI Analytics  
-🧠 More Accurate Deep Learning Models  
-📸 Real-Time Camera Detection  
-🌱 Farmer Recommendation System  
-
----
-
-# 👨‍💻 Developed By
+# 👨‍💻 Development Team
 
 <div align="center">
 
 # Akshay R 🚀
-
 ### AI & Full Stack Developer
 
 <p align="center">
   <a href="https://github.com/Akshay001-A">
     <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github"/>
   </a>
-
   <a href="https://www.linkedin.com/in/akshayofficial0207">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin"/>
   </a>
-
   <a href="https://www.instagram.com/akshay_authentic">
     <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram"/>
   </a>
@@ -318,7 +248,6 @@ pip install -r requirements.txt
 ## 🤝 Contributors
 
 ### Charan Kumar R
-
 <a href="https://github.com/Charan-Kumarr">
   <img src="https://img.shields.io/badge/GitHub-Charan--Kumarr-181717?style=for-the-badge&logo=github"/>
 </a>
@@ -329,18 +258,16 @@ pip install -r requirements.txt
 
 # 📄 License
 
-This project is licensed under the **MIT License**.
-
-See the LICENSE file for more information.
+This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
 
 ---
 
 <div align="center">
 
-# ⭐ Thanks for Visiting This Project ⭐
+# ⭐ Thanks for Visiting Our Project ⭐
 
-### 🌱 Potato Plant Disease Detection Using Deep Learning
+### 🌱 AI for Smart & Sustainable Agriculture 🌿
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&size=24&duration=3000&color=6BCB77&center=true&vCenter=true&width=850&lines=Deep+Learning+Based+Plant+Disease+Detection;TensorFlow+%2B+Flask+Powered+Web+Application;AI+for+Smart+Agriculture+%F0%9F%8C%BF"/>
+<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&size=24&duration=3000&color=6BCB77&center=true&vCenter=true&width=850&lines=Deep+Learning+Based+Plant+Disease+Detection;TensorFlow+%2B+Flask+%2B+MongoDB+Ecosystem;Dockerized+Microservice+Architecture;AI+for+Smart+Agriculture+%F0%9F%8C%BF"/>
 
 </div>
