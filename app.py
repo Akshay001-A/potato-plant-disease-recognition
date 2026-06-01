@@ -7,6 +7,9 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 from datetime import datetime
 load_dotenv()
+import logging
+
+
 
 # MongoDB connection
 MONGO_URI = os.getenv('MONGO_URI')
@@ -37,13 +40,13 @@ def save_prediction(label, confidence, cause, solution, is_healthy, image_data_u
             "timestamp": datetime.utcnow()
         })
     except Exception as e:
-        print('Failed to save prediction to MongoDB:', repr(e))
+        logging.error('Failed to save prediction to MongoDB: %s', e)
 os.environ["TF_DISABLE_ONEDNN"] = "1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 try:
     import tensorflow as tf
 except Exception as e:
-    print('TensorFlow import failed:', e)
+    logging.error('TensorFlow import failed: %s', e)
     tf = None
 import os
 import io
@@ -277,6 +280,55 @@ def api_predict():
         })
         
     return jsonify({"error": "Invalid file type. Allowed types are png, jpg, jpeg."}), 400
+
+from bson import ObjectId
+
+@app.route('/profile')
+def profile():
+
+    if 'user_id' not in session:
+        return redirect(url_for('signin'))
+
+    user = users_collection.find_one(
+        {"_id": ObjectId(session['user_id'])}
+    )
+
+    return render_template(
+        'profile.html',
+        user=user
+    )
+
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+
+    if 'user_id' not in session:
+        return redirect(url_for('signin'))
+
+    users_collection.update_one(
+        {"_id": ObjectId(session['user_id'])},
+        {
+            "$set": {
+                "name": request.form['name'],
+                "email": request.form['email'],
+                "address": request.form['address']
+            }
+        }
+    )
+
+    session['user_name'] = request.form['name']
+
+    flash('Profile updated successfully!', 'success')
+
+    return redirect(url_for('profile'))
+
+
+@app.route('/logout')
+def logout():
+
+    session.clear()
+
+    return redirect(url_for('home'))    
 
 if __name__ == "__main__":
     app.secret_key = os.getenv('SECRET_KEY', 'potato-plant-secret-key-123')

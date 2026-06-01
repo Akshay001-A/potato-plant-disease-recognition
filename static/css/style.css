@@ -692,11 +692,41 @@ body::before {
   }
 
   .upload-btn {
-
     font-size: 15px;
-
     padding: 15px;
+    background: linear-gradient(135deg, #00ffcc, #0099ff);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
+
+  .upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 255, 204, 0.3);
+  }
+
+  /* Navigation auth button (Sign Up / Profile) */
+  .nav-auth-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #00ffcc, #0099ff);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+  }
+
+  .nav-auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 255, 204, 0.3);
+  }
+
+
 
   .result-box {
 
@@ -739,95 +769,26 @@ body::before {
 
 /* ========================= */
 /* SIDEBAR */
+
+/* Global navigation auth button (Sign Up / Profile) */
+.nav-auth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #00ffcc, #0099ff);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 204, 0.3);
+}
+
 /* ========================= */
 
 /* Sidebar styles moved to static/css/sidebar.css */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

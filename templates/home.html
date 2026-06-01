@@ -11,7 +11,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
 
     <!-- GOOGLE FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
@@ -59,7 +59,20 @@
             Potato Guard
 
         </div>
-        <a href="{{ url_for('signup') }}" class="nav-auth-btn">Sign Up</a>
+        {% if session.get('user_id') %}
+
+        <a href="{{ url_for('profile') }}" class="nav-auth-btn">
+            <i class="fa-solid fa-user"></i>
+            {{ session.get('user_name') }}
+        </a>
+
+        {% else %}
+
+        <a href="{{ url_for('signup') }}" class="nav-auth-btn">
+            Sign Up
+        </a>
+
+        {% endif %}
 
     </nav>
 
