@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+
+
+    <a href="{{ url_for('home') }}" class="back-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Home
+
+    </a>
+    <div class="dashboard-container">
+
+        <h1>
+            Statistics Dashboard
+        </h1>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <h2>Total Predictions</h2>
+                <span>{{ total_predictions }}</span>
+            </div>
+
+            <div class="stat-card">
+                <h2>Healthy Leaves</h2>
+                <span>{{ healthy_count }}</span>
+            </div>
+
+            <div class="stat-card">
+                <h2>Diseased Leaves</h2>
+                <span>{{ disease_count }}</span>
+            </div>
+
+            <div class="stat-card">
+                <h2>Most Common Disease</h2>
+                <span>{{ most_common_disease }}</span>
+            </div>
+
+        </div>
+
+        <div class="recent-card">
+
+            <h2>Recent Activity</h2>
+
+            {% if recent_prediction %}
+
+            <p>
+                {{ recent_prediction.label }}
+            </p>
+
+            <small>
+                {{ recent_prediction.timestamp }}
+            </small>
+
+            {% else %}
+
+            <p>
+                No predictions yet.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

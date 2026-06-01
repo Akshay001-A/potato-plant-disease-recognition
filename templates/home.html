@@ -251,64 +251,64 @@
     }
 
 
-async function clearHistory() {
+    async function clearHistory() {
 
-    const confirmClear =
-        confirm(
-            'Delete ALL history?'
-        );
-
-    if (!confirmClear)
-        return;
-
-    try {
-
-        const response =
-            await fetch(
-                '/clear_history',
-                {
-                    method: 'DELETE'
-                }
+        const confirmClear =
+            confirm(
+                'Delete ALL history?'
             );
 
-        const data =
-            await response.json();
+        if (!confirmClear)
+            return;
 
-        if (data.success) {
+        try {
 
-            loadHistory();
+            const response =
+                await fetch(
+                    '/clear_history',
+                    {
+                        method: 'DELETE'
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (data.success) {
+
+                loadHistory();
+
+            }
+
+        }
+        catch (err) {
+
+            console.error(err);
 
         }
 
     }
-    catch(err) {
 
-        console.error(err);
+    document.addEventListener(
+        'DOMContentLoaded',
+        () => {
 
-    }
+            const clearBtn =
+                document.getElementById(
+                    'clearHistoryBtn'
+                );
 
-}
+            if (clearBtn) {
 
-document.addEventListener(
-    'DOMContentLoaded',
-    () => {
+                clearBtn.addEventListener(
+                    'click',
+                    clearHistory
+                );
 
-        const clearBtn =
-            document.getElementById(
-                'clearHistoryBtn'
-            );
-
-        if(clearBtn){
-
-            clearBtn.addEventListener(
-                'click',
-                clearHistory
-            );
+            }
 
         }
-
-    }
-);
+    );
 
 </script>
 
@@ -356,33 +356,57 @@ document.addEventListener(
 
     </div>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
+    
+        <!-- NAVBAR -->
 
-        <!-- LOGO -->
-        <div class="logo">
+        <nav class="navbar">
 
-            <i class="fa-solid fa-leaf"></i>
+        
+            <!-- LOGO -->
+            <div class="logo">
 
-            Potato Guard
+                <i class="fa-solid fa-leaf"></i>
 
-        </div>
-        {% if session.get('user_id') %}
+                Potato Guard
 
-        <a href="{{ url_for('profile') }}" class="nav-auth-btn">
-            <i class="fa-solid fa-user"></i>
-            {{ session.get('user_name') }}
-        </a>
+            </div>
 
-        {% else %}
+            {% if session.get('user_id') %}
 
-        <a href="{{ url_for('signup') }}" class="nav-auth-btn">
-            Sign Up
-        </a>
+            <div class="top-actions">
 
-        {% endif %}
+                <a href="{{ url_for('dashboard') }}" class="nav-auth-btn dashboard-btn" title="Dashboard">
 
-    </nav>
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </a>
+
+                <a href="{{ url_for('profile') }}" class="nav-auth-btn profile-btn" title="Profile">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span>
+                        {{ session.get('user_name') }}
+                    </span>
+
+                </a>
+
+            </div>
+
+            {% else %}
+
+            <a href="{{ url_for('signup') }}" class="nav-auth-btn">
+
+                Sign Up
+
+            </a>
+
+            {% endif %}
+            
+
+        </nav>
+
+
 
     <!-- HERO -->
     <section class="hero">

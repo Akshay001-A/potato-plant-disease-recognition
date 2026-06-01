@@ -445,6 +445,85 @@ def clear_history():
         "success": True,
         "deleted_count": result.deleted_count
     })
+
+@app.route('/dashboard')
+def dashboard():
+
+    if 'user_id' not in session:
+        return redirect(url_for('signin'))
+
+    user_id = session['user_id']
+
+    total_predictions = predictions_collection.count_documents({
+        "user_id": user_id
+    })
+
+    healthy_count = predictions_collection.count_documents({
+        "user_id": user_id,
+        "is_healthy": True
+    })
+
+    disease_count = predictions_collection.count_documents({
+        "user_id": user_id,
+        "is_healthy": False
+    })
+
+    pipeline = [
+        {
+            "$match": {
+                "user_id": user_id
+            }
+        },
+        {
+            "$group": {
+                "_id": "$label",
+                "count": {
+                    "$sum": 1
+                }
+            }
+        },
+        {
+            "$sort": {
+                "count": -1
+            }
+        },
+        {
+            "$limit": 1
+        }
+    ]
+
+    most_common = list(
+        predictions_collection.aggregate(
+            pipeline
+        )
+    )
+
+    most_common_disease = (
+        most_common[0]["_id"]
+        if most_common
+        else "None"
+    )
+
+    recent_prediction = predictions_collection.find_one(
+        {
+            "user_id": user_id
+        },
+        sort=[("timestamp", -1)]
+    )
+
+    return render_template(
+        'dashboard.html',
+
+        total_predictions=total_predictions,
+
+        healthy_count=healthy_count,
+
+        disease_count=disease_count,
+
+        most_common_disease=most_common_disease,
+
+        recent_prediction=recent_prediction
+    )    
 if __name__ == "__main__":
     app.secret_key = os.getenv(
         'SECRET_KEY',

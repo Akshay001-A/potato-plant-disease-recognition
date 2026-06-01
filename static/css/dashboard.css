@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        linear-gradient(rgba(0, 0, 0, .35),
+            rgba(0, 0, 0, .45)),
+        url('../images/environment_bg.png');
+
+    background-size: cover;
+    background-position: center;
+
+    color: white;
+
+    padding: 40px;
+}
+
+.dashboard-container {
+
+    max-width: 1200px;
+
+    margin: auto;
+}
+
+.dashboard-container h1 {
+
+    text-align: center;
+
+    color: #00ffcc;
+
+    margin-bottom: 40px;
+}
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 25px;
+}
+
+.stat-card {
+
+    background:
+        rgba(255, 255, 255, .08);
+
+    backdrop-filter:
+        blur(15px);
+
+    border:
+        1px solid rgba(255, 255, 255, .12);
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+.stat-card h2 {
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
+
+    color: #00ffcc;
+}
+
+.stat-card span {
+
+    display: block;
+
+    font-size: 42px;
+
+    font-weight: 700;
+
+    word-wrap: break-word;
+
+    overflow-wrap: break-word;
+
+    text-align: center;
+}
+
+.stat-card:last-child span {
+
+    font-size: 28px;
+
+    line-height: 1.2;
+}
+
+.recent-card {
+
+    margin-top: 40px;
+
+    background:
+        rgba(255, 255, 255, .08);
+
+    backdrop-filter:
+        blur(15px);
+
+    border-radius: 20px;
+
+    padding: 25px;
+}
+
+.recent-card h2 {
+
+    color: #00ffcc;
+
+    margin-bottom: 15px;
+}
+
+.back-btn {
+
+    position: fixed;
+
+    top: 25px;
+
+    left: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    text-decoration: none;
+
+    color: #00ffcc;
+
+    background: rgba(255, 255, 255, .08);
+
+    backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255, 255, 255, .15);
+
+    padding: 12px 18px;
+
+    border-radius: 15px;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.back-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 20px rgba(0, 255, 204, .35);
+}
