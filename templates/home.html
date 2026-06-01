@@ -356,55 +356,55 @@
 
     </div>
 
-    
-        <!-- NAVBAR -->
 
-        <nav class="navbar">
+    <!-- NAVBAR -->
 
-        
-            <!-- LOGO -->
-            <div class="logo">
+    <nav class="navbar">
 
-                <i class="fa-solid fa-leaf"></i>
 
-                Potato Guard
+        <!-- LOGO -->
+        <div class="logo">
 
-            </div>
+            <i class="fa-solid fa-leaf"></i>
 
-            {% if session.get('user_id') %}
+            Potato Guard
 
-            <div class="top-actions">
+        </div>
 
-                <a href="{{ url_for('dashboard') }}" class="nav-auth-btn dashboard-btn" title="Dashboard">
+        {% if session.get('user_id') %}
 
-                    <i class="fa-solid fa-chart-line"></i>
+        <div class="top-actions">
 
-                </a>
+            <a href="{{ url_for('dashboard') }}" class="nav-auth-btn dashboard-btn" title="Dashboard">
 
-                <a href="{{ url_for('profile') }}" class="nav-auth-btn profile-btn" title="Profile">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    <span>
-                        {{ session.get('user_name') }}
-                    </span>
-
-                </a>
-
-            </div>
-
-            {% else %}
-
-            <a href="{{ url_for('signup') }}" class="nav-auth-btn">
-
-                Sign Up
+                <i class="fa-solid fa-chart-line"></i>
 
             </a>
 
-            {% endif %}
-            
+            <a href="{{ url_for('profile') }}" class="nav-auth-btn profile-btn" title="Profile">
 
-        </nav>
+                <i class="fa-solid fa-user"></i>
+
+                <span>
+                    {{ session.get('user_name') }}
+                </span>
+
+            </a>
+
+        </div>
+
+        {% else %}
+
+        <a href="{{ url_for('signup') }}" class="nav-auth-btn">
+
+            Sign Up
+
+        </a>
+
+        {% endif %}
+
+
+    </nav>
 
 
 
@@ -602,6 +602,14 @@
                     </div>
 
                 </div>
+
+                <a href="{{ url_for('download_report') }}" class="download-pdf-btn">
+
+                    <i class="fa-solid fa-file-pdf"></i>
+
+                    Download PDF Report
+
+                </a>
 
             </div>
 

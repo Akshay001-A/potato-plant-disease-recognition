@@ -832,3 +832,43 @@ body::before {
   gap: 8px;
 
 }
+
+.download-pdf-btn {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 10px;
+
+  width: 100%;
+
+  margin-top: 20px;
+
+  padding: 15px;
+
+  border-radius: 16px;
+
+  text-decoration: none;
+
+  color: white;
+
+  font-weight: 600;
+
+  background:
+    linear-gradient(135deg,
+      #ff4d4d,
+      #ff1a1a);
+
+  transition: .3s;
+}
+
+.download-pdf-btn:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 0 20px rgba(255, 0, 0, .35);
+}

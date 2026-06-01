@@ -9,7 +9,17 @@ from datetime import datetime
 load_dotenv()
 import logging
 
+from io import BytesIO
 
+from flask import send_file
+
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph,
+    Spacer
+)
+
+from reportlab.lib.styles import getSampleStyleSheet
 
 # MongoDB connection
 MONGO_URI = os.getenv('MONGO_URI')
@@ -241,6 +251,13 @@ def uploadimage():
         cause = disease_info.get(label, {}).get("cause", "Unknown cause")
         solution = disease_info.get(label, {}).get("solution", "No solution found")
         is_healthy = ("healthy" in label.lower())
+        session['last_prediction'] = {
+    'label': label,
+    'confidence': confidence,
+    'cause': cause,
+    'solution': solution,
+    'is_healthy': is_healthy
+}
         # Save prediction to MongoDB
         save_prediction(label, confidence, cause, solution, is_healthy, data_uri)
 
@@ -524,6 +541,86 @@ def dashboard():
 
         recent_prediction=recent_prediction
     )    
+@app.route('/dashboard/trend')
+def dashboard_trend():
+    if 'user_id' not in session:
+        return jsonify([])
+    pipeline = [
+        {"$match": {"user_id": session['user_id']}},
+        {"$group": {"_id": {"$dateToString": {"format": "%Y-%m-%d", "date": "$timestamp"}}, "count": {"$sum": 1}}},
+        {"$sort": {"_id": 1}}
+    ]
+    raw_data = list(predictions_collection.aggregate(pipeline))
+    # Transform to friendly keys
+    data = [{"date": item["_id"], "count": item["count"]} for item in raw_data]
+    return jsonify(data)
+
+
+@app.route('/download_report')
+def download_report():
+
+    prediction = session.get('last_prediction')
+
+    if not prediction:
+        return "No prediction available", 404
+
+    buffer = BytesIO()
+
+    doc = SimpleDocTemplate(buffer)
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    elements.append(
+        Paragraph(
+            "Potato Guard Disease Report",
+            styles['Title']
+        )
+    )
+
+    elements.append(Spacer(1, 20))
+
+    elements.append(
+        Paragraph(
+            f"<b>Disease:</b> {prediction['label']}",
+            styles['Normal']
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            f"<b>Confidence:</b> {prediction['confidence']:.2f}%",
+            styles['Normal']
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            f"<b>Cause:</b> {prediction['cause']}",
+            styles['Normal']
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            f"<b>Solution:</b> {prediction['solution']}",
+            styles['Normal']
+        )
+    )
+
+    doc.build(elements)
+
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name='potato_guard_report.pdf',
+        mimetype='application/pdf'
+    )
+
+
 if __name__ == "__main__":
     app.secret_key = os.getenv(
         'SECRET_KEY',
@@ -534,3 +631,4 @@ if __name__ == "__main__":
         debug=True,
         use_reloader=False
     )
+

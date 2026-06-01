@@ -51,21 +51,19 @@ body {
 }
 
 .stat-card {
-
-    background:
-        rgba(255, 255, 255, .08);
-
-    backdrop-filter:
-        blur(15px);
-
-    border:
-        1px solid rgba(255, 255, 255, .12);
-
+    background: rgba(255, 255, 255, .08);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, .12);
     border-radius: 20px;
-
     padding: 30px;
-
     text-align: center;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 255, 204, .35);
+    background: rgba(255, 255, 255, .12);
 }
 
 .stat-card h2 {
