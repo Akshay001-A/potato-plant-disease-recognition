@@ -112,6 +112,30 @@ AI prediction result card displaying the classified label, confidence progress b
 
 ---
 
+### 🗂 Prediction History Sidebar
+Slide-out panel showcasing chronologically ordered past records with thumbnails and quick deletion actions:
+<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/history_sidebar.png" width="100%"/>
+
+---
+
+### 📈 Statistics & Analytics Dashboard
+Visual summary metrics detailing total diagnoses, healthy leaf logs, diseased leaf logs, and most common infection profiles:
+<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/dashboard.png" width="100%"/>
+
+---
+
+### 🔍 History Detail Popup Modal
+A clean diagnostic overlay revealing original uploaded plant images, prediction confidences, and precise crop treatment actions:
+<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/history_detail.png" width="100%"/>
+
+---
+
+### 👤 Glassmorphism User Profile Manager
+A premium profile management screen enabling custom credential updates and secure sign-out flows:
+<img src="https://raw.githubusercontent.com/Akshay001-A/potato-plant-disease-recognition/main/static/images/user_profile.png" width="100%"/>
+
+---
+
 # 🧬 Leaf Diagnosis Classes
 
 | Class | Type | Diagnostic Condition | Care Strategy |
