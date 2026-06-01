@@ -397,6 +397,37 @@ def history_detail(prediction_id):
         "solution": record.get("solution"),
         "timestamp": record.get("timestamp").strftime("%d %b %Y %H:%M")
     })
+
+@app.route('/delete_history/<prediction_id>', methods=['DELETE'])
+def delete_history(prediction_id):
+
+    if 'user_id' not in session:
+        return jsonify({
+            "success": False
+        }), 401
+
+    try:
+
+        result = predictions_collection.delete_one({
+
+            "_id": ObjectId(prediction_id),
+
+            "user_id": session['user_id']
+
+        })
+
+        return jsonify({
+            "success": result.deleted_count > 0
+        })
+
+    except Exception as e:
+
+        print("Delete Error:", e)
+
+        return jsonify({
+            "success": False
+        }), 500
+        
 if __name__ == "__main__":
     app.secret_key = os.getenv(
         'SECRET_KEY',

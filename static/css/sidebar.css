@@ -396,3 +396,27 @@
 
   font-size: 14px;
 }
+
+.delete-history-btn {
+
+  border: none;
+
+  background: none;
+
+  color: #ff6b6b;
+
+  cursor: pointer;
+
+  font-size: 18px;
+
+  margin-left: 10px;
+
+  transition: .3s;
+}
+
+.delete-history-btn:hover {
+
+  color: #ff3b3b;
+
+  transform: scale(1.15);
+}
