@@ -177,17 +177,17 @@ The trained deep learning model is not pushed to the repository due to its large
 
 # 🐳 Running with Docker
 
-This application is fully containerized! You can build and spin up the microservice within seconds.
+This application is fully containerized and pre-published on Docker Hub! You can pull and run the microservice instantly in a single command.
 
-### 🛠 Build the Docker Image
+### 📥 Pull the Image from Docker Hub
 ```bash
-docker build -t potato-disease-app .
+docker pull akshayauthentic/potato-disease:latest
 ```
 
 ### 🚀 Run the Container
-Pass your environment variables or point to your `.env` file to launch:
+Pass your environment variables or point to your `.env` file to launch the image:
 ```bash
-docker run -p 5000:5000 --env-file .env potato-disease-app
+docker run -p 5000:5000 --env-file .env akshayauthentic/potato-disease:latest
 ```
 Access the application on: **`http://localhost:5000`**
 
