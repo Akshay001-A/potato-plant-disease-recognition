@@ -1,4 +1,3 @@
-print("RUNNING APP FILE:", __file__)
 from flask import Flask, render_template, request, redirect, send_from_directory, jsonify, session, flash, url_for
 import numpy as np
 import json
