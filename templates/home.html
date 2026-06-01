@@ -53,21 +53,33 @@
             data.forEach(item => {
 
                 container.innerHTML += `
-                <div class="history-item">
+    <div
+    class="history-item"
+    onclick="openHistoryDetail('${item._id}')">
 
-                    <div class="history-title">
-                        ${item.label}
-                    </div>
+        <img
+            src="${item.image}"
+            alt="Plant"
+            class="history-thumb">
 
-                    <div class="history-date">
-                        ${item.confidence.toFixed(2)}%
-                    </div>
+        <div class="history-content">
 
-                    <div class="history-date">
-                        ${item.timestamp}
-                    </div>
+            <div class="history-title">
+                ${item.label}
+            </div>
 
-                </div>
+            <div class="history-confidence">
+                ${item.confidence.toFixed(2)}%
+            </div>
+
+            <div class="history-date">
+                ${item.timestamp}
+            </div>
+
+        </div>
+
+    </div>
+
             `;
 
             });
@@ -86,9 +98,126 @@
         loadHistory
     );
 
+    async function openHistoryDetail(id) {
+
+
+        try {
+
+            const response =
+                await fetch(`/history/${id}`);
+
+            const data =
+                await response.json();
+
+            const body =
+                document.getElementById(
+                    'historyModalBody'
+                );
+
+            body.innerHTML = `
+
+        <img
+            src="${data.image}"
+            class="modal-image"
+            alt="Plant Image">
+
+        <h2 class="modal-title">
+            ${data.label}
+        </h2>
+
+        <p class="modal-confidence">
+            Confidence:
+            ${Number(data.confidence).toFixed(2)}%
+        </p>
+
+        <div class="modal-section">
+            <h3>Cause</h3>
+            <p>${data.cause}</p>
+        </div>
+
+        <div class="modal-section">
+            <h3>Solution</h3>
+            <p>${data.solution}</p>
+        </div>
+
+        <div class="modal-date">
+            ${data.timestamp}
+        </div>
+
+    `;
+
+            document
+                .getElementById('historyModal')
+                .classList.add('active');
+
+        }
+        catch (err) {
+
+            console.error(
+                'Failed to load history details:',
+                err
+            );
+
+        }
+
+
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+
+
+            const closeModal =
+                document.getElementById(
+                    'closeHistoryModal'
+                );
+
+            if (closeModal) {
+
+                closeModal.addEventListener(
+                    'click',
+                    () => {
+
+                        document
+                            .getElementById(
+                                'historyModal'
+                            )
+                            .classList.remove(
+                                'active'
+                            );
+
+                    }
+                );
+
+            }
+
+        }
+
+    );
+
+
 </script>
 
+
+
 <body>
+
+    <div id="historyModal" class="history-modal">
+
+        <div class="history-modal-content">
+
+            <button id="closeHistoryModal" class="history-modal-close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+            <div id="historyModalBody"></div>
+
+        </div>
+
+    </div>
     <!-- SIDEBAR -->
     {% include 'sidebar.html' %}
     <div id="sidebarOverlay" class="sidebar-overlay"></div>

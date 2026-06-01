@@ -364,13 +364,39 @@ def history():
     for item in records:
 
         history_data.append({
-            "label": item.get("label"),
-            "confidence": item.get("confidence"),
-            "timestamp": item.get("timestamp").strftime("%d %b %Y %H:%M")
-        })
+    "_id": str(item["_id"]),
+    "label": item.get("label"),
+    "confidence": item.get("confidence"),
+    "timestamp": item.get("timestamp").strftime("%d %b %Y %H:%M"),
+    "image": item.get("image")
+})
 
     return jsonify(history_data)
 
+from bson import ObjectId
+
+@app.route('/history/<prediction_id>')
+def history_detail(prediction_id):
+
+    if 'user_id' not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    record = predictions_collection.find_one({
+        "_id": ObjectId(prediction_id),
+        "user_id": session['user_id']
+    })
+
+    if not record:
+        return jsonify({"error": "Not Found"}), 404
+
+    return jsonify({
+        "image": record.get("image"),
+        "label": record.get("label"),
+        "confidence": record.get("confidence"),
+        "cause": record.get("cause"),
+        "solution": record.get("solution"),
+        "timestamp": record.get("timestamp").strftime("%d %b %Y %H:%M")
+    })
 if __name__ == "__main__":
     app.secret_key = os.getenv(
         'SECRET_KEY',
