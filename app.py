@@ -30,17 +30,28 @@ def save_prediction(label, confidence, cause, solution, is_healthy, image_data_u
         image_data_uri (str): Base64 data URI of the uploaded image.
     """
     try:
-        predictions_collection.insert_one({
-            "label": label,
-            "confidence": confidence,
-            "cause": cause,
-            "solution": solution,
-            "is_healthy": is_healthy,
-            "image": image_data_uri,
-            "timestamp": datetime.utcnow()
-        })
+
+     if 'user_id' not in session:
+        return
+     predictions_collection.insert_one({
+
+        "user_id": session['user_id'],
+
+        "label": label,
+        "confidence": confidence,
+        "cause": cause,
+        "solution": solution,
+        "is_healthy": is_healthy,
+        "image": image_data_uri,
+
+        "timestamp": datetime.utcnow()
+    })
+
     except Exception as e:
-        logging.error('Failed to save prediction to MongoDB: %s', e)
+     logging.error(
+        'Failed to save prediction to MongoDB: %s',
+        e
+    )
 os.environ["TF_DISABLE_ONEDNN"] = "1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 try:
@@ -330,6 +341,43 @@ def logout():
 
     return redirect(url_for('home'))    
 
+
+@app.route('/history')
+def history():
+
+    if 'user_id' not in session:
+        return jsonify([])
+
+    records = list(
+        predictions_collection.find(
+            {
+                "user_id": session['user_id']
+            }
+        ).sort(
+            "timestamp",
+            -1
+        )
+    )
+
+    history_data = []
+
+    for item in records:
+
+        history_data.append({
+            "label": item.get("label"),
+            "confidence": item.get("confidence"),
+            "timestamp": item.get("timestamp").strftime("%d %b %Y %H:%M")
+        })
+
+    return jsonify(history_data)
+
 if __name__ == "__main__":
-    app.secret_key = os.getenv('SECRET_KEY', 'potato-plant-secret-key-123')
-app.run(debug=True, use_reloader=False)
+    app.secret_key = os.getenv(
+        'SECRET_KEY',
+        'potato-plant-secret-key-123'
+    )
+
+    app.run(
+        debug=True,
+        use_reloader=False
+    )

@@ -22,6 +22,72 @@
 
 </head>
 
+<script>
+
+    async function loadHistory() {
+
+        try {
+
+            const response = await fetch('/history');
+
+            const data = await response.json();
+
+            const container =
+                document.getElementById('historyContainer');
+
+            if (!container) return;
+
+            if (data.length === 0) {
+
+                container.innerHTML = `
+                <p style="text-align:center;opacity:.7;">
+                    No history available
+                </p>
+            `;
+
+                return;
+            }
+
+            container.innerHTML = '';
+
+            data.forEach(item => {
+
+                container.innerHTML += `
+                <div class="history-item">
+
+                    <div class="history-title">
+                        ${item.label}
+                    </div>
+
+                    <div class="history-date">
+                        ${item.confidence.toFixed(2)}%
+                    </div>
+
+                    <div class="history-date">
+                        ${item.timestamp}
+                    </div>
+
+                </div>
+            `;
+
+            });
+
+        }
+        catch (err) {
+
+            console.error(err);
+
+        }
+
+    }
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        loadHistory
+    );
+
+</script>
+
 <body>
     <!-- SIDEBAR -->
     {% include 'sidebar.html' %}
